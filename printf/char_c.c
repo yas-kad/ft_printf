@@ -6,16 +6,15 @@
 /*   By: yait-kad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/14 23:58:51 by yait-kad          #+#    #+#             */
-/*   Updated: 2019/12/15 02:46:18 by yait-kad         ###   ########.fr       */
+/*   Updated: 2019/12/28 10:28:01 by yait-kad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include <unistd.h>
-#include <stdio.h>
 #include <stdlib.h>
 
-void	ft_putstr(char *str)
+void		ft_putstr(char *str)
 {
 	int i;
 
@@ -30,7 +29,7 @@ void	ft_putstr(char *str)
 char		*reverse(char *str2, int i)
 {
 	char	*ch;
-	int 	j;
+	int		j;
 
 	ch = malloc(i);
 	j = 0;
@@ -41,18 +40,16 @@ char		*reverse(char *str2, int i)
 		i--;
 		j++;
 	}
-	ch[j]='\0';
+	ch[j] = '\0';
 	return (ch);
 }
 
-void		char_c(t_str *tab)
+void		charc(t_str *tab, char print)
 {
-	char		print;
 	char		*result;
 	int			i;
 
 	i = 0;
-	print = va_arg(tab->ap, int);
 	result = malloc(2);
 	result[0] = print;
 	result[1] = '\0';
@@ -68,11 +65,22 @@ void		char_c(t_str *tab)
 	result[i] = '\0';
 	tab->len = i;
 	if (tab->flags[0] == '-')
+	{
+		free(result);
 		ft_putstr(result);
+	}
 	else
 	{
 		result = reverse(result, i);
+		free(result);
 		ft_putstr(result);
 	}
-	tab->i++;
+}
+
+void		char_c(t_str *tab)
+{
+	char print;
+
+	print = va_arg(tab->ap, int);
+	charc(tab, print);
 }

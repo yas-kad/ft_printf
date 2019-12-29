@@ -1,51 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   display.c                                          :+:      :+:    :+:   */
+/*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yait-kad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/08 17:48:59 by yait-kad          #+#    #+#             */
-/*   Updated: 2019/12/08 18:03:21 by yait-kad         ###   ########.fr       */
+/*   Updated: 2019/12/28 10:22:17 by yait-kad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <unistd.h>
+#include "libft/libft.h"
 
-t_str		*display(t_str *tab)
+int		check(t_str *tab)
 {
-	char flag;
-	unsigned int c;
-	char		*ch;
-
-	flag = tab->specifier_flag;
-	if (flag == 'd' || flag == 'i')
+	if (ft_strcmp(tab->format, "%") == 0)
+		return (-1);
+	while (tab->format[tab->i] != '\0')
 	{
-		c = va_arg(tab->ap,int);
-		write(1, &c, 1);
+		if (tab->format[tab->i] == '%')
+		{
+			tab->i++;
+			tab->width = 0;
+			tab->precision = -1;
+			tab->flags = malloc(2);
+			tab->flags[0] = '\0';
+			tab->flags[1] = '\0';
+			specification(tab);
+		}
+		else
+		{
+			ft_putchar(tab->format[tab->i]);
+			tab->len++;
+		}
+		tab->i++;
 	}
-	else if (flag == 'c')
-	{
-		c = va_arg(tab->ap,int);
-		write(1, &c, 1);
-	}
-	else if (flag == 's')
-	{
-		ch = va_arg(tab->ap,char *);
-		puts(ch);
-	}
-	else if (flag == 'p')
-	{
-		c = va_arg(tab->ap,int);
-	}
-	else if (flag == 'u')
-	{
-		c = va_arg(tab->ap,int);
-	}
-	else if (flag == 'x' || flag == 'X')
-	{
-		c = va_arg(tab->ap,int);
-	}
-	return (tab);
+	return (tab->len);
 }
