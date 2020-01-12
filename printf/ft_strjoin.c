@@ -1,23 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   char_c.c                                           :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yait-kad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/14 23:58:51 by yait-kad          #+#    #+#             */
-/*   Updated: 2019/12/28 10:28:01 by yait-kad         ###   ########.fr       */
+/*   Created: 2019/10/28 14:45:28 by yait-kad          #+#    #+#             */
+/*   Updated: 2019/11/15 21:32:47 by yait-kad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include <unistd.h>
 #include <stdlib.h>
 
-void		char_c(t_str *tab)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char print;
+	char	*s;
+	int		i;
+	int		j;
 
-	print = va_arg(tab->ap, int);
-	charc(tab, print);
+	i = 0;
+	j = 0;
+	if (!s1 || !s2)
+		return (NULL);
+	s = NULL;
+	if (!(s = (char *)malloc(sizeof(char) * (ft_strlen(s1) +
+						ft_strlen(s2) + 1))))
+		return (NULL);
+	while (s1[j] != '\0')
+	{
+		s[i++] = s1[j++];
+	}
+	j = 0;
+	while (s2[j] != '\0')
+	{
+		s[i] = s2[j];
+		i++;
+		j++;
+	}
+	s[i] = '\0';
+	return (s);
 }

@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <unistd.h>
+#include <stdlib.h>
 
 void		percent(t_str *tab)
 {
@@ -22,8 +24,8 @@ void		percent(t_str *tab)
 		tab->width = 0;
 		result = char_d(tab, 1, "%");
 		tab->len = tab->len + ft_strlen(result);
-		free(result);
 		ft_putstr(result);
+		free(result);
 	}
 	else
 		charc(tab, tab->format[tab->i]);

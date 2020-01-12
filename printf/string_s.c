@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "libft/libft.h"
+#include <stdlib.h>
 
 char		*resultat(t_str *tab, int size, char *result)
 {
@@ -19,10 +19,16 @@ char		*resultat(t_str *tab, int size, char *result)
 	char	*ptr;
 
 	i = 0;
-	ptr = malloc(size + 1);
-	while (i < size)
+	ptr = (char *)malloc(size + 1);
+	if (tab->flags[0] != '-' && tab->flags[1] == '0')
 	{
-		ptr[i++] = ' ';
+		while (i < size)
+			ptr[i++] = '0';
+	}
+	else
+	{
+		while (i < size)
+			ptr[i++] = ' ';
 	}
 	ptr[i] = '\0';
 	if (tab->flags[0] == '-')
@@ -36,26 +42,28 @@ char		*resultat(t_str *tab, int size, char *result)
 char		*check_string(t_str *tab, char *str, int compt, int width)
 {
 	char	*result;
+	char	*tmp;
 	int		i;
 	int		size;
 
 	i = 0;
 	size = compt;
-	result = malloc(compt + 1);
+	result = (char *)malloc(compt + 1);
 	if (compt > 0)
 	{
-		while (str[i] != '\0' && compt > 0)
+		while (str[i] != '\0' && compt-- > 0)
 		{
 			result[i] = str[i];
-			compt--;
 			i++;
 		}
 		result[i] = '\0';
 	}
 	if (width > size)
 	{
+		tmp = result;
 		size = width - size;
 		result = resultat(tab, size, result);
+		free(tmp);
 	}
 	return (result);
 }
@@ -103,6 +111,6 @@ void		string_s(t_str *tab)
 	else
 		result = check_string(tab, str, len, tab->width);
 	tab->len = tab->len + ft_strlen(result);
-	free(result);
 	ft_putstr(result);
+	free(result);
 }

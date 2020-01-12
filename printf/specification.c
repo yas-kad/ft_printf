@@ -11,47 +11,6 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "libft/libft.h"
-
-t_str		*check_flags(t_str *tab)
-{
-	while (tab->format[tab->i] == '0' || tab->format[tab->i] == '-')
-	{
-		if (tab->format[tab->i] == '-')
-			tab->flags[0] = '-';
-		else if (tab->format[tab->i] == '0')
-			tab->flags[1] = '0';
-		tab->i++;
-	}
-	return (tab);
-}
-
-t_str		*check_width(t_str *tab)
-{
-	int i;
-
-	if (tab->format[tab->i] == '*')
-	{
-		tab->i++;
-		i = va_arg(tab->ap, int);
-		if (i < 0)
-		{
-			tab->flags[0] = '-';
-			i = i * (-1);
-		}
-		tab->width = i;
-	}
-	else
-	{
-		while (tab->format[tab->i] >= '0' && tab->format[tab->i] <= '9')
-		{
-			tab->width *= 10;
-			tab->width += (tab->format[tab->i] - 48);
-			tab->i++;
-		}
-	}
-	return (tab);
-}
 
 t_str		*nbr_put(t_str *tab)
 {
@@ -64,10 +23,28 @@ t_str		*nbr_put(t_str *tab)
 	return (tab);
 }
 
-t_str		*check_precision(t_str *tab)
+t_str		*etoile(t_str *tab)
 {
 	int	i;
 
+	i = va_arg(tab->ap, int);
+	if (i < 0)
+	{
+		if (tab->flags[1] == '0')
+		{
+			tab->precision = tab->width;
+			tab->prec_neg = -1;
+		}
+		else
+			tab->precision = -1;
+	}
+	else
+		tab->precision = i;
+	return (tab);
+}
+
+t_str		*check_precision(t_str *tab)
+{
 	tab->tst_prec = tab->format[tab->i];
 	while (tab->format[tab->i] == '.')
 	{
@@ -75,16 +52,7 @@ t_str		*check_precision(t_str *tab)
 		if (tab->format[tab->i] == '*')
 		{
 			tab->i++;
-			i = va_arg(tab->ap, int);
-			if (i < 0)
-			{
-				if (tab->flags[1] == '0')
-					tab->precision = tab->width;
-				else
-					tab->precision = -1;
-			}
-			else
-				tab->precision = i;
+			tab = etoile(tab);
 		}
 		else if (tab->format[tab->i] >= '0' && tab->format[tab->i] <= '9')
 		{
@@ -99,6 +67,7 @@ t_str		*check_precision(t_str *tab)
 
 t_str		*specification(t_str *tab)
 {
+	tab->width_1 = 0;
 	tab = check_flags(tab);
 	tab = check_width(tab);
 	tab = check_precision(tab);
@@ -118,5 +87,6 @@ t_str		*specification(t_str *tab)
 		percent(tab);
 	else
 		tab->i--;
+	free(tab->flags);
 	return (tab);
 }

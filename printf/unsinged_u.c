@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "libft/libft.h"
 
 void		unsigned_u(t_str *tab)
 {
@@ -30,9 +29,13 @@ void		unsigned_u(t_str *tab)
 	nbr_len = ft_strlen(nbr_str);
 	if (tab->precision == 0 && nbr == 0)
 		nbr_str[0] = '\0';
+	if (tab->width == 1 && nbr == 0 && tab->precision == 0)
+		tab->width_1 = 1;
 	result = char_d(tab, nbr_len, nbr_str);
 	tab->len = tab->len + ft_strlen(result);
+	ft_putstr(result);
 	free(nbr_str);
 	free(result);
-	ft_putstr(result);
+	nbr = 0;
+	nbr_len = 0;
 }

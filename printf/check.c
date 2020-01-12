@@ -6,12 +6,11 @@
 /*   By: yait-kad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/12/08 17:48:59 by yait-kad          #+#    #+#             */
-/*   Updated: 2019/12/28 10:22:17 by yait-kad         ###   ########.fr       */
+/*   Updated: 2020/01/05 14:08:51 by yait-kad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "libft/libft.h"
 
 int		check(t_str *tab)
 {
@@ -24,9 +23,12 @@ int		check(t_str *tab)
 			tab->i++;
 			tab->width = 0;
 			tab->precision = -1;
-			tab->flags = malloc(2);
+			tab->flags = (char *)malloc(2);
 			tab->flags[0] = '\0';
 			tab->flags[1] = '\0';
+			tab->value_d = 0;
+			tab->tst_prec = '\0';
+			tab->prec_neg = 0;
 			specification(tab);
 		}
 		else

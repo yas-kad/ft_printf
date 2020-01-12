@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "ft_printf.h"
-#include "libft/libft.h"
 #include <stdlib.h>
 
 int			check_len(unsigned int nb)
@@ -36,7 +35,7 @@ char		*hexedecimal(unsigned int nb, char c)
 
 	len = check_len(nb);
 	modl = 0;
-	result = malloc(len + 1);
+	result = (char *)malloc(len + 1);
 	i = 0;
 	while (i < len)
 	{
@@ -49,7 +48,6 @@ char		*hexedecimal(unsigned int nb, char c)
 	}
 	result[i] = '\0';
 	result = reverse(result, ft_strlen(result));
-	free(result);
 	return (result);
 }
 
@@ -70,8 +68,13 @@ void		hex_x(t_str *tab, char ch)
 	nbr_len = ft_strlen(nbr_str);
 	if (tab->precision == 0 && nbr == 0)
 		nbr_str[0] = '\0';
+	if (tab->width == 1 && nbr == 0 && tab->precision == 0)
+		tab->width_1 = 1;
 	result = char_d(tab, nbr_len, nbr_str);
 	tab->len = tab->len + ft_strlen(result);
-	free(result);
 	ft_putstr(result);
+	free(nbr_str);
+	free(result);
+	nbr_len = 0;
+	nbr = 0;
 }

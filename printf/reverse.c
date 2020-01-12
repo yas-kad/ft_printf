@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   char_c.c                                           :+:      :+:    :+:   */
+/*   reverse.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: yait-kad <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/12/14 23:58:51 by yait-kad          #+#    #+#             */
-/*   Updated: 2019/12/28 10:28:01 by yait-kad         ###   ########.fr       */
+/*   Created: 2019/12/29 15:32:44 by yait-kad          #+#    #+#             */
+/*   Updated: 2019/12/29 15:32:46 by yait-kad         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,21 @@
 #include <unistd.h>
 #include <stdlib.h>
 
-void		char_c(t_str *tab)
+char		*reverse(char *str2, int i)
 {
-	char print;
+	char	*ch;
+	int		j;
 
-	print = va_arg(tab->ap, int);
-	charc(tab, print);
+	ch = (char *)malloc(i);
+	j = 0;
+	i--;
+	while (i >= 0)
+	{
+		ch[j] = str2[i];
+		i--;
+		j++;
+	}
+	ch[j] = '\0';
+	free(str2);
+	return (ch);
 }
